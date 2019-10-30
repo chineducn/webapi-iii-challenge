@@ -1,6 +1,7 @@
 const express = require('express');
-const helmet = require('helmet')
-
+const helmet = require('helmet');
+const { validateUserId } = require('./middleware')
+const { logger } = require('./middleware')
 const server = express();
 
 server.use(express.json())
@@ -11,11 +12,12 @@ server.get('/', (req, res) => {
   res.send(`<h2>Let's write some middleware!</h2>`)
 });
 
-//custom middleware
+server.get('/users/:id', validateUserId, (req, res) => {
+  res.send(`<h2>Let's get that bloody user!</h2>`)
+});
 
-function logger(req, res, next) {
-  console.log(` A ${req.method} Request, from url "${req.url}" was made at ${new Date().toISOString()}`);
-  next();
-};
+
+
+
 
 module.exports = server;
